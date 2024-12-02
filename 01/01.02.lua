@@ -15,26 +15,29 @@ local function set_score(values_saved, v, lista2)
   return value_ocorrences_in_list(v, lista2)
 end
 
+local function get_similarity_score(lista1, lista2)
+  local score
+
+  local values_saved = {}
+
+  local similarity_score = 0
+
+  for _, v in ipairs(lista1) do
+    score = set_score(values_saved, v, lista2)
+    if score ~= 0 then
+      similarity_score = similarity_score + v * score
+      values_saved[v] = score
+    end
+  end
+  return similarity_score
+end
+
 local read_data = require("read_data")
 
-local success, value = pcall(read_data.get_lists_from_file)
+local lista1, lista2, err = read_data.get_lists_from_file()
 
-if not success then error(value) end
+if err then error(err) end
 
-local lista1, lista2 = value.lista1, value.lista2
-
-local similarity_score = 0
-
-local score
-
-local values_saved = {}
-
-for _, v in ipairs(lista1) do
-  score = set_score(values_saved, v, lista2)
-  if score ~= 0 then
-    similarity_score = similarity_score + v * score
-    values_saved[value] = score
-  end
-end
+local similarity_score = get_similarity_score(lista1, lista2)
 
 print(similarity_score)

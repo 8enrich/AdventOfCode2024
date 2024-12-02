@@ -22,11 +22,9 @@ end
 
 local read_data = require("read_data")
 
-local success, value = pcall(read_data.get_lists_from_file)
+local lista1, lista2, err = read_data.get_lists_from_file()
 
-if not success then error(value) end
-
-local lista1, lista2 = value.lista1, value.lista2
+if err then error(err) end
 
 local distance = get_distance_from_lists(lista1, lista2)
 

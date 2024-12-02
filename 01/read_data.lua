@@ -1,26 +1,22 @@
 
+package.path = package.path .. ";../?.lua"
+local std = require("std.std")
+
 local function get_lists_from_file()
   local file = io.open("data.txt", "r")
 
-  if file == nil then error("Arquivo não encontrado.") end
+  if file == nil then return nil, nil, error("Arquivo não encontrado.") end
 
-  local listas = {
-    ["lista1"]= {},
-    ["lista2"]= {}
-  }
-
-  local count = 0
+  local lista1, lista2 = {}, {}
 
   for line in file:lines() do
-    for i in string.gmatch(line, "%S+") do
-      if count % 2 == 0 then table.insert(listas.lista1, tonumber(i)) end
-      if count % 2 == 1 then table.insert(listas.lista2, tonumber(i)) end
-      count = count + 1
-    end
+    local value1, value2 = table.unpack(std.string.split(line, "   "))
+    table.insert(lista1, tonumber(value1))
+    table.insert(lista2, tonumber(value2))
   end
   file:close()
 
-  return listas
+  return lista1, lista2, nil
 end
 
 return {
