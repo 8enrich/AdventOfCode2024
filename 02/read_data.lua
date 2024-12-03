@@ -10,19 +10,19 @@ local function int_list(lista)
 end
 
 local function get_reports()
-  local file = io.open("data.txt", "r")
 
-  if file == nil then return nil, error("Arquivo não encontrado.") end
+  local lines, err = std.file.read_lines("data.txt")
+
+  if err then error(err) end
 
   local reports = {}
 
-  for line in file:lines() do
+  for _, line in ipairs(lines) do
     local level = int_list(std.string.split(line, " "))
     table.insert(reports, level)
   end
-  file:close()
 
-  return reports, nil
+  return reports
 end
 
 return {

@@ -3,20 +3,19 @@ package.path = package.path .. ";../?.lua"
 local std = require("std.std")
 
 local function get_lists_from_file()
-  local file = io.open("data.txt", "r")
+  local lines, err = std.file.read_lines("data.txt")
 
-  if file == nil then return nil, nil, error("Arquivo não encontrado.") end
+  if err then error(err) end
 
   local lista1, lista2 = {}, {}
 
-  for line in file:lines() do
+  for _,line in ipairs(lines) do
     local value1, value2 = table.unpack(std.string.split(line, "   "))
     table.insert(lista1, tonumber(value1))
     table.insert(lista2, tonumber(value2))
   end
-  file:close()
 
-  return lista1, lista2, nil
+  return lista1, lista2
 end
 
 return {

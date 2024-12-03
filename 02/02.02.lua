@@ -27,9 +27,7 @@ local function count_safe_reports(reports)
   return count
 end
 
-local reports, err = read_data.get_reports()
-
-if err then error(err) end
+local reports = read_data.get_reports()
 
 local safe_reports = count_safe_reports(reports)
 print(safe_reports)

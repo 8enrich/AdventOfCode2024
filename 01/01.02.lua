@@ -34,9 +34,7 @@ end
 
 local read_data = require("read_data")
 
-local lista1, lista2, err = read_data.get_lists_from_file()
-
-if err then error(err) end
+local lista1, lista2 = read_data.get_lists_from_file()
 
 local similarity_score = get_similarity_score(lista1, lista2)
 
