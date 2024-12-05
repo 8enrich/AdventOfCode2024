@@ -1,10 +1,16 @@
 
 local function split(str, delimiter)
-    local result = {}
-    for match in (str .. delimiter):gmatch("(.-)" .. delimiter) do
-      table.insert(result, match)
-    end
-    return result
+  local result = {}
+  str = str .. delimiter
+  while true do
+    local index = str:find(delimiter)
+    if not index then break end
+    local left = str:sub(1, index - #delimiter)
+    table.insert(result, left)
+    str = str:sub(index + #delimiter, #str)
+  end
+  if #result == 1 then return nil end
+  return result
 end
 
 local function replace(str, old, new)

@@ -38,7 +38,8 @@ local function get_input(today)
 
   local variables = {}
   for line in env:lines() do
-    local key, value = table.unpack(std.string.split(line, "="))
+    local values = std.string.split(line, "=")
+    local key, value = values[1], values[2]
     variables[key] = value
   end
   env:close()
