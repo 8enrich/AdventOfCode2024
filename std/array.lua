@@ -1,6 +1,17 @@
 
 local str = require("std.string")
 
+local function iter(array)
+  local index = 1
+  return function()
+    if index <= #array then
+      local item = array[index]
+      index = index + 1
+      return item
+    end
+  end
+end
+
 local function to_str(array)
   local s = "{"
   for i=1, #array do
@@ -26,5 +37,6 @@ end
 return {
   print = print,
   to_str = to_str,
-  has_element = has_element
+  has_element = has_element,
+  iter = iter
 }

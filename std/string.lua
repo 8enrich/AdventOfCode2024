@@ -49,9 +49,21 @@ local function to_str(element)
   return tostring(element)
 end
 
+local function iter(str)
+  local index = 1
+  return function()
+    if index <= #str then
+      local char = str:sub(index, index)
+      index = index + 1
+      return char
+    end
+  end
+end
+
 return {
   split = split,
   replace = replace,
   repr = repr,
-  to_str = to_str
+  to_str = to_str,
+  iter = iter
 }
