@@ -1,29 +1,19 @@
 
+local str = require("std.string")
+
 local function to_str(array)
-  local str = "{"
+  local s = "{"
   for i=1, #array do
-    str = str .. tostring(array[i])
-    if i ~= #array then str = str .. ", " end
+    if type(array[i]) == "table" then s = s .. "\n   " end
+    s = s .. str.to_str(array[i])
+    if i ~= #array then s = s .. ", " end
   end
-  return str .. "}"
+  if type(array[#array]) == "table" then s = s.. "\n" end
+  return s .. "}"
 end
 
-local function print_arr(array)
-  local write = io.write
-  write("{")
-  local v
-  local i = 1
-  for _, element in pairs(array) do
-    if type(element) == "table" then
-      v = "\n  " .. to_str(element)
-    else
-      v = tostring(element)
-    end
-    write(v)
-    if i ~= #array then write(', ') end
-    i = i + 1
-  end
-  write('}\n')
+local function print(array)
+  _G.print(to_str(array))
 end
 
 local function has_element(list, element)
@@ -33,9 +23,8 @@ local function has_element(list, element)
   return false
 end
 
-
 return {
-  print_arr = print_arr,
+  print = print,
   to_str = to_str,
   has_element = has_element
 }

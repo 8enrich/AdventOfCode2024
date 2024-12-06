@@ -5,7 +5,7 @@ local function split(str, delimiter)
   while true do
     local index = str:find(delimiter)
     if not index then break end
-    local left = str:sub(1, index - #delimiter)
+    local left = str:sub(1, index - 1)
     table.insert(result, left)
     str = str:sub(index + #delimiter, #str)
   end
@@ -28,7 +28,30 @@ local function replace(str, old, new)
   return new_str
 end
 
+local function repr(str)
+  return "'" .. str .. "'"
+end
+
+local function to_str(element)
+  if type(element) == "table" then
+    local s = "{"
+    for i=1, #element do
+      if type(element[i]) == "table" then s = s .. "\n   " end
+      s = s .. to_str(element[i])
+      if i ~= #element then s = s .. ", " end
+    end
+    if type(element[#element]) == "table" then s = s.. "\n" end
+    return s .. "}"
+  end
+  if type(element) == "string" then
+    return repr(element)
+  end
+  return tostring(element)
+end
+
 return {
   split = split,
-  replace = replace
+  replace = replace,
+  repr = repr,
+  to_str = to_str
 }

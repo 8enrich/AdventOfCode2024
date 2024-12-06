@@ -26,7 +26,7 @@ end
 local count = 0
 
 local data = read_data.get()
-local rules, lists = level_05.parse_data(data)
+local rules, lists = table.unpack(level_05.parse_data(data))
 local nums = level_05.set_dict(rules)
 
 for i=1, #lists do

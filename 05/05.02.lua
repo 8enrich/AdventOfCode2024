@@ -19,9 +19,7 @@ local function correct_update(list, nums, index)
   while true do
     local elements = nums[list[index]]
     if not find_elements(elements, list, index - 1) then
-      local temp = list[index]
-      list[index] = list[index - 1]
-      list[index - 1] = temp
+      list[index], list[index - 1] = std.swap(list[index], list[index - 1])
       correct_update(list, nums, index - 1)
     end
     if index == #list then return end
@@ -29,7 +27,7 @@ local function correct_update(list, nums, index)
   end
 end
 
-local function analise_list(list, nums)
+local function analyze_list(list, nums)
   for i=2, #list do
     local elements = nums[list[i]]
     if not find_elements(elements, list, i - 1) then
@@ -41,13 +39,13 @@ local function analise_list(list, nums)
 end
 
 local data = read_data.get()
-local rules, lists = level_05.parse_data(data)
+local rules, lists = table.unpack(level_05.parse_data(data))
 local nums = level_05.set_dict(rules)
 
 local count = 0
 
 for i=1, #lists do
-  count = count + tonumber(analise_list(lists[i], nums))
+  count = count + tonumber(analyze_list(lists[i], nums))
 end
 
 print(count)
