@@ -3,6 +3,7 @@ local string = require("std.string")
 local array = require("std.array")
 local file = require("std.file")
 local dict = require("std.dict")
+local set = require("std.set")
 
 local function swap(a, b)
   return b, a
@@ -40,6 +41,7 @@ return {
   array = array,
   file = file,
   dict = dict,
+  set = set,
   swap = swap,
   map = map,
   filter = filter,
