@@ -25,7 +25,7 @@ part1 = function(data, initial_pos)
 end
 
 part2 = function(data, initial_pos, locals)
-  get_loops_quantity(data, initial_pos, locals)
+  return get_loops_quantity(data, initial_pos, locals)
 end
 
 find_initial_pos = function(data)

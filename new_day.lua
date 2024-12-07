@@ -17,9 +17,6 @@ local function create_files(today)
   print("Criando diretório " .. today_dir)
   os.execute("mkdir " .. today)
   create_file(today_dir, today .. ".lua")
-  create_file(today_dir, today .. ".01.lua")
-  create_file(today_dir, today .. ".02.lua")
-  create_file(today_dir, "read_data.lua")
   create_file(today_dir, "data.txt")
   return today_dir
 end
@@ -39,6 +36,7 @@ local function get_input(today)
   local variables = {}
   for line in env:lines() do
     local values = std.string.split(line, "=")
+    if not values then return nil, error("Erro ao ler o .env") end
     local key, value = values[1], values[2]
     variables[key] = value
   end
@@ -87,6 +85,34 @@ if not files:find(today) then
   if not input_file then error("Não foi possível abrir o arquivo de input") end
   input_file:write(input_str)
   input_file:close()
+  local file = io.open(today_dir .. today .. ".lua", "w")
+  if not file then error("Não foi possível abrir o arquivo do código") end
+  local initial_code = [[
+    package.path = package.path .. ";../?.lua"
+    local std = require("std.std")
+
+    local
+      part1,
+      part2,
+
+    local function main()
+
+      local data = std.file.read_lines("data.txt")
+      local answer1 = part1(data)
+      print("Parte 1: ", #answer1)
+      local answer2 = part2(data)
+      print("Parte 2:", answer2)
+
+    end
+
+    part1 = function(data) end
+
+    part2 = function(data) end
+    
+    main()
+  ]]
+  file:write(initial_code)
+  file:close()
   print("Arquivos do dia " .. today .. " criados com sucesso!")
   os.exit()
 end

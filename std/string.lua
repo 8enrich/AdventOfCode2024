@@ -10,7 +10,6 @@ local function split(str, delimiter)
     str = str:sub(index + #delimiter, #str)
   end
   if #result == 1 then return nil end
-  table.remove(result, result[-1])
   return result
 end
 
