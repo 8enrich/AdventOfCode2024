@@ -88,28 +88,28 @@ if not files:find(today) then
   local file = io.open(today_dir .. today .. ".lua", "w")
   if not file then error("Não foi possível abrir o arquivo do código") end
   local initial_code = [[
-    package.path = package.path .. ";../?.lua"
-    local std = require("std.std")
+package.path = package.path .. ";../?.lua"
+local std = require("std.std")
 
-    local
-      part1,
-      part2,
+local
+  part1,
+  part2
 
-    local function main()
+local function main()
 
-      local data = std.file.read_lines("data.txt")
-      local answer1 = part1(data)
-      print("Parte 1: ", #answer1)
-      local answer2 = part2(data)
-      print("Parte 2:", answer2)
+  local data = std.file.read_lines("data.txt")
+  local answer1 = part1(data)
+  print("Parte 1: ", answer1)
+  local answer2 = part2(data)
+  print("Parte 2:", answer2)
 
-    end
+end
 
-    part1 = function(data) end
+part1 = function(data) return 0 end
 
-    part2 = function(data) end
-    
-    main()
+part2 = function(data) return 0 end
+
+main()
   ]]
   file:write(initial_code)
   file:close()

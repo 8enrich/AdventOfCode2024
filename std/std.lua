@@ -36,6 +36,19 @@ local function reduce(arr, f)
   return result
 end
 
+local function bin(n)
+  if n < 2 then return tostring(n) end
+  return bin(math.floor(n / 2)) .. (n % 2)
+end
+
+local function bin_digits(n, d)
+  local b = bin(n)
+  while #b < d do
+    b = "0" .. b
+  end
+  return b
+end
+
 return {
   string = string,
   array = array,
@@ -45,5 +58,7 @@ return {
   swap = swap,
   map = map,
   filter = filter,
-  reduce = reduce
+  reduce = reduce,
+  bin = bin,
+  bin_digits = bin_digits
 }
