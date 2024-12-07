@@ -27,9 +27,23 @@ local function print(array)
   _G.print(to_str(array))
 end
 
-local function has_element(list, element)
-  for i=1, #list do
-    if list[i] == element then return true end
+local function compare(arr1, arr2)
+  if not arr1 or not arr2 or #arr1 ~= #arr2 then return false end
+  for i=1, #arr1 do
+    if arr1[i] ~= arr2[i] then return false end
+  end
+  return true
+end
+
+local function has_element(arr, element)
+  if type(element) == "table" then
+    for i=1, #arr do
+      if compare(arr[i], element) then return true end
+    end
+    return false
+  end
+  for i=1, #arr do
+    if arr[i] == element then return true end
   end
   return false
 end
@@ -38,5 +52,6 @@ return {
   print = print,
   to_str = to_str,
   has_element = has_element,
-  iter = iter
+  iter = iter,
+  compare = compare
 }
