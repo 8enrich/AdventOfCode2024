@@ -109,8 +109,7 @@ part1 = function(data) return 0 end
 
 part2 = function(data) return 0 end
 
-main()
-  ]]
+main()]]
   file:write(initial_code)
   file:close()
   print("Arquivos do dia " .. today .. " criados com sucesso!")
