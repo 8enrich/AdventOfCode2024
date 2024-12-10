@@ -6,18 +6,17 @@ local
   part2,
   find_antenas,
   count_antinodes,
-  verify_antinode,
-  get_antinodes_pos,
-  get_pos,
-  get_antinodes,
-  count_antinodes_with_harmonica,
   count_antinodes_type,
+  get_antinodes,
+  analyse_node,
+  verify_antinode,
+  count_antinodes_with_harmonica,
   get_antinodes_with_harmonica,
-  insert_at_antinodes
+  analyse_node_with_harmonica
 
 local function main()
 
-  local data = std.file.read_lines("example.txt")
+  local data = std.file.read_lines("data.txt")
   local antenas = find_antenas(data)
   local answer1 = part1(antenas, data)
   print("Parte 1: ", answer1)
@@ -66,14 +65,17 @@ end
 get_antinodes = function(antinodes, pos, data)
   for i=1, #pos do
     for j= i + 1, #pos do
-      local antinode1, antinode2 = table.unpack(get_antinodes_pos(pos[i], pos[j]))
-      if verify_antinode(antinode1, data) then
-        std.set.add(antinodes, antinode1)
-      end
-      if verify_antinode(antinode2, data) then
-        std.set.add(antinodes, antinode2)
-      end
+      analyse_node(pos[i], pos[j], antinodes, data)
+      analyse_node(pos[j], pos[i], antinodes, data)
     end
+  end
+end
+
+analyse_node = function(pos1, pos2, antinodes, data)
+  local distance = std.array.sub(pos1, pos2)
+  local antinode = std.array.sum(pos1, distance)
+  if verify_antinode(antinode, data) then
+    std.set.add(antinodes, antinode)
   end
 end
 
@@ -82,78 +84,34 @@ verify_antinode = function (antinode, data)
   return x > 0 and x <= #data and y > 0 and y <= #data[1]
 end
 
-get_antinodes_pos = function (pos1, pos2)
-  local distance = {math.abs(pos1[1] - pos2[1]), math.abs(pos1[2] - pos2[2])}
-  return get_pos(distance, pos1, pos2)
-end
-
-get_pos = function (distance, pos1, pos2)
-  local x, y = table.unpack(distance)
-  local x1, y1 = table.unpack(pos1)
-  local x2, y2 = table.unpack(pos2)
-  local distances = {y1 > y2, y1 < y2, true}
-  local positions = {
-  {{x1 - x, y1 + y}, {x2 + x, y2 - y}},
-  {{x1 - x, y1 - y}, {x2 + x, y2 + y}},
-  {{0, 0}, {0, 0}}}
-  for i=1, #distances do
-    if distances[i] then
-      return positions[i]
-    end
-  end
-end
-
 count_antinodes_with_harmonica = function (antenas, data)
   return count_antinodes_type(antenas, data, get_antinodes_with_harmonica)
 end
 
 get_antinodes_with_harmonica = function(antinodes, pos, data)
   for i=1, #pos do
-    for j= i + 1, #pos do
-      insert_at_antinodes(antinodes, data, pos[i], pos[j])
+    for j=i + 1, #pos do
+      analyse_node_with_harmonica(pos[i], pos[j], antinodes, data)
+      analyse_node_with_harmonica(pos[j], pos[i], antinodes, data)
     end
   end
 end
 
-local function t1(antinodes, data, pos1, antinode1)
-  local antinode2
-  while verify_antinode(antinode1, data) do
-    std.set.add(antinodes, antinode1)
-    local temp = antinode1
-    antinode1, antinode2 = table.unpack(get_antinodes_pos(antinode1, pos1))
-    pos1 = temp
+analyse_node_with_harmonica = function(pos1, pos2, antinodes, data)
+  local minus_distance = std.array.sub(pos2, pos1)
+  local antinode_left = std.array.sum(pos1, minus_distance)
+  if verify_antinode(antinode_left, data) then
+    std.set.add(antinodes, antinode_left)
+  end
+  local distance = std.array.sub(pos1, pos2)
+  local antinode = std.array.sum(pos1, distance)
+  local value = 1
+  while verify_antinode(antinode, data) do
+    std.set.add(antinodes, antinode)
+    value = value + 1
+    antinode = std.array.sum(pos1, std.array.mul(distance, value))
   end
 end
 
-local function t2(antinodes, data, pos2, antinode2)
-  local antinode1
-  while verify_antinode(antinode2, data) do
-    std.set.add(antinodes, antinode2)
-    local temp = antinode2
-    antinode1, antinode2 = table.unpack(get_antinodes_pos(antinode2, pos2))
-    pos2 = temp
-  end
-end
-
-local function draw_map(antinodes, data)
-  for i=1, #data do
-    for j=1, #data[i] do
-      local char = "."
-      if std.array.has_element(antinodes, {i, j}) then
-        char = "#"
-      end
-      io.write(char)
-    end
-    io.write("\n")
-  end
-  print()
-end
-
-insert_at_antinodes = function(antinodes, data, pos1, pos2)
-  local antinode1, antinode2 = table.unpack(get_antinodes_pos(pos1, pos2))
-  t1(antinodes, data, pos1, antinode1)
-  t2(antinodes, data, pos2, antinode2)
-  draw_map(antinodes, data)
-end
 
 main()

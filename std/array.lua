@@ -48,10 +48,34 @@ local function has_element(arr, element)
   return false
 end
 
+local function sum(arr1, arr2)
+  if #arr1 ~= #arr2 then error("Os vetores tem tamanhos diferentes") end
+  local result = {}
+  for i=1, #arr1 do
+    table.insert(result, arr1[i] + arr2[i])
+  end
+  return result
+end
+
+local function mul(arr, m)
+  local result = {}
+  for i=1, #arr do
+    table.insert(result, arr[i] * m)
+  end
+  return result
+end
+
+local function sub(arr1, arr2)
+  return sum(arr1, mul(arr2, -1))
+end
+
 return {
   print = print,
   to_str = to_str,
   has_element = has_element,
   iter = iter,
-  compare = compare
+  compare = compare,
+  sum = sum,
+  mul = mul,
+  sub = sub
 }
