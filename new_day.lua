@@ -68,11 +68,29 @@ local function get_input_str(input)
   return str
 end
 
+if #arg > 1 then
+  error("Muitos argumentos mandados de uma só vez\nUso: 'lua " .. arg[0] .. [[
+ <dia-do-mês>(Opcional)' 
+Caso um dia não seja mandando ele vai rodar com a data de hoje de acordo com o sistema]])
+end
+
 local files, err = get_files()
 if err then error(err) end
 assert(files)
 
 local today = os.date("%d")
+
+if #arg == 1 then
+  local day = tonumber(arg[1])
+  if day < 1 or day > 25 then
+    error("Dia inválido")
+  end
+  local day_str = arg[1]
+  if #day_str == 1 then
+    day_str = "0" .. day_str
+  end
+  today = day_str
+end
 
 if not files:find(today) then
   local today_dir = create_files(today)

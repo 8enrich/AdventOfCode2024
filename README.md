@@ -33,8 +33,14 @@ Você pode encontrar seu código de sessão inspecionando os cookies no seu nave
 
 ## Como usar:
 
-Para criar o código do próximo dia, execute o seguinte comando:
+Para criar os arquivos do dia, execute o seguinte comando:
 
 ```bash
 lua new_day.lua
+```
+
+Se você desejar criar os arquivos de um dia específico, execute o seguinte comando:
+
+```bash
+lua new_day.lua <dia>
 ```
