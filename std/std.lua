@@ -49,6 +49,22 @@ local function bin_digits(n, d)
   return b
 end
 
+local function enum(element)
+  local iters = {
+    ["table"] = array.iter,
+    ["string"] = string.iter
+  }
+  local iter = iters[type(element)](element)
+  local i = 0
+  return function()
+    local item = iter()
+    i = i + 1
+    if item then
+      return i, item
+    end
+  end
+end
+
 return {
   string = string,
   array = array,
@@ -60,5 +76,6 @@ return {
   filter = filter,
   reduce = reduce,
   bin = bin,
-  bin_digits = bin_digits
+  bin_digits = bin_digits,
+  enum = enum
 }

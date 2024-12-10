@@ -38,13 +38,11 @@ end
 find_antenas = function(data)
   local antenas = {}
   for i=1, #data do
-    local j = 1
-    for char in std.string.iter(data[i]) do
+    for j, char in std.enum(data[i]) do
       if char ~= "." then
         if not antenas[char] then antenas[char] = {} end
         table.insert(antenas[char], {i, j})
       end
-      j = j + 1
     end
   end
   return antenas
@@ -112,6 +110,5 @@ analyse_node_with_harmonica = function(pos1, pos2, antinodes, data)
     antinode = std.array.sum(pos1, std.array.mul(distance, value))
   end
 end
-
 
 main()
