@@ -69,6 +69,25 @@ local function sub(arr1, arr2)
   return sum(arr1, mul(arr2, -1))
 end
 
+local function slice(arr, first, last)
+  local s = {}
+  for i=first, last do
+    table.insert(s, arr[i])
+  end
+  return s
+end
+
+local function add(arr1, arr2)
+  local result = {}
+  for i=1, #arr2 do
+    table.insert(result, arr2[i])
+  end
+  for i=1, #arr1 do
+    table.insert(result, arr1[i])
+  end
+  return result
+end
+
 return {
   print = print,
   to_str = to_str,
@@ -77,5 +96,7 @@ return {
   compare = compare,
   sum = sum,
   mul = mul,
-  sub = sub
+  sub = sub,
+  slice = slice,
+  add = add
 }

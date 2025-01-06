@@ -10,11 +10,9 @@ local function swap(a, b)
 end
 
 local function map(arr, f)
-  local result = {}
-  for _, v in ipairs(arr) do
-    table.insert(result, f(v))
-  end
-  return result
+  if #arr == 0 then return {} end
+  local t = {f(arr[#arr])};
+  return array.add(t, map(array.slice(arr, 1, #arr - 1), f))
 end
 
 local function filter(arr, f)
