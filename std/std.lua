@@ -12,14 +12,14 @@ end
 local function map(arr, f)
   if #arr == 0 then return {} end
   local t = {f(arr[1])};
-  return array.add(t, map(array.slice(arr, 2, #arr), f))
+  return array.add(map(array.slice(arr, 2, #arr), f), t)
 end
 
 local function filter(arr, f)
   if #arr == 0 then return {} end
   local t = {}
   if f(arr[1]) then table.insert(t, arr[1]) end
-  return array.add(t, filter(array.slice(arr, 2, #arr), f))
+  return array.add(filter(array.slice(arr, 2, #arr), f), t)
 end
 
 local function reduce(arr, f)
@@ -35,6 +35,15 @@ local function for_each(arr, f)
   if #arr == 0 then return end
   f(arr[1])
   return for_each(array.slice(arr, 2, #arr), f)
+end
+
+local function flat(arr)
+  if #arr == 0 then return {} end
+  return array.add(flat(array.slice(arr, 2, #arr)), {table.unpack(arr[1])})
+end
+
+local function flat_map(arr, f)
+  return map(flat(arr), f)
 end
 
 local function bin(n)
@@ -77,6 +86,8 @@ return {
   filter = filter,
   reduce = reduce,
   for_each = for_each,
+  flat = flat,
+  flat_map = flat_map,
   bin = bin,
   bin_digits = bin_digits,
   enum = enum
